@@ -9,9 +9,15 @@
 
 Create a software solution that allows the old system, which accesses customer data via USB and binary files, to work seamlessly with the new system, which uses HTTPS and a REST API. The goal is to ensure the legacy system's interface can function with the new system's API, integrating the two for unified data access.
 
+# Design Patterns Overview
+
+- `Builder Pattern`: Useful for constructing complex objects like flight plans. This pattern can help manage the various components involved in a flight plan (destinations, durations, fuel usage, etc.) in a step-by-step manner.
+- `Repository Pattern`: Ideal for managing database interactions. This pattern provides a separation between the data access logic and the business logic of your application, making it easier to manage data operations and changes.
+- `Lazy Loading Pattern`: This pattern can be beneficial for your application in managing resource usage efficiently, especially when dealing with large sets of flight data that might not all need to be loaded into memory at once.
+
 # GitHub Repository Link:
 
-https://github.com/dddingnan/cs-665-assignment-4
+https://github.com/dddingnan/cs-665-project
 
 # Implementation Description
 
