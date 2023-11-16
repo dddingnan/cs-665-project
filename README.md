@@ -1,13 +1,13 @@
-| CS-665       | Software Design & Patterns |
-| ------------ | -------------------------- |
-| Name         | Dingnan Hsu                |
-| Date         | 11/05/2023                 |
-| Course       | 2023 Fall                  |
-| Assignment # | 4                          |
+| CS-665    | Software Design & Patterns |
+| --------- | -------------------------- |
+| Name      | Dingnan Hsu                |
+| Date      | 11/15/2023                 |
+| Course    | 2023 Fall                  |
+| Project # | Final Project              |
 
-# Assignment Overview
+# Project Overview
 
-Create a software solution that allows the old system, which accesses customer data via USB and binary files, to work seamlessly with the new system, which uses HTTPS and a REST API. The goal is to ensure the legacy system's interface can function with the new system's API, integrating the two for unified data access.
+This project is a sophisticated tool for airplane owners to plan travels. By entering their location and airplane type, users can find destinations within their non-refueling range. The tool determines flight range, potential destinations, and travel duration, considering aircraft specifics and fuel status. It also estimates fuel usage and CO2 emissions with respect to aircraft efficiency, flight distance, and weather conditions. Moreover, it calculates potential fuel costs. New features include an expanded list of airplane types for precise calculations and database integration for enhanced data management, effectively replacing file-based data loading. It handles database issues seamlessly. The tool gives users a comprehensive overview of each destination, promoting informed, eco-friendly travel decisions
 
 # Design Patterns Overview
 
