@@ -9,6 +9,7 @@
  */
 package edu.bu.met.cs665;
 
+import java.sql.Connection;
 import java.util.List;
 
 import edu.bu.met.cs665.exception.InvalidDataException;
@@ -18,6 +19,7 @@ import edu.bu.met.cs665.new_system.CustomerData_HTTPS;
 import edu.bu.met.cs665.new_system.NewCustomerData_HTTPS;
 import edu.bu.met.cs665.adapters.CustomerDataUSBAdapter;
 import edu.bu.met.cs665.common.CustomerData;
+import edu.bu.met.cs665.database.Database;
 
 public class Main {
 
@@ -35,28 +37,39 @@ public class Main {
    * @throws InterruptedException If there's an interrupted exception.
    */
   public static void main(String[] args) throws InvalidDataException, InterruptedException {
+    // Create sqlite database first
+    // TODO Check the design pattern
+    Connection conn = null;
+    try {
+      Database.createNewDatabase();
+      conn = Database.connect();
+      Database.createAirplaneTable();
+      Database.createLocationsTable();
+    } finally {
+      Database.close(conn);
+    }
 
-    FileLoader loader = new FileLoader();
-    List<CustomerData> customers = loader.loadCustomer("src/data/customer.csv");
-    System.out.println("---------------------------");
+    // FileLoader loader = new FileLoader();
+    // List<CustomerData> customers = loader.loadCustomer("src/data/customer.csv");
+    // System.out.println("---------------------------");
 
-    LegacyCustomerData_USB legacySystem = new LegacyCustomerData_USB(customers);
-    NewCustomerData_HTTPS newSystem = new NewCustomerData_HTTPS(customers);
+    // LegacyCustomerData_USB legacySystem = new LegacyCustomerData_USB(customers);
+    // NewCustomerData_HTTPS newSystem = new NewCustomerData_HTTPS(customers);
 
-    int customerId = 1; // Example customer ID.
-    legacySystem.printCustomer(customerId);
-    legacySystem.getCustomer_USB(customerId);
+    // int customerId = 1; // Example customer ID.
+    // legacySystem.printCustomer(customerId);
+    // legacySystem.getCustomer_USB(customerId);
 
-    System.out.println("---------------------------");
+    // System.out.println("---------------------------");
 
-    newSystem.printCustomer(customerId);
-    newSystem.getCustomer_HTTPS(customerId);
+    // newSystem.printCustomer(customerId);
+    // newSystem.getCustomer_HTTPS(customerId);
 
-    System.out.println("---------------------------");
-    // Use the adapter to interact with the legacy system as if it were the new
-    // HTTPS system
-    CustomerData_HTTPS adapter = new CustomerDataUSBAdapter(legacySystem);
-    adapter.printCustomer(customerId);
-    adapter.getCustomer_HTTPS(customerId);
+    // System.out.println("---------------------------");
+    // // Use the adapter to interact with the legacy system as if it were the new
+    // // HTTPS system
+    // CustomerData_HTTPS adapter = new CustomerDataUSBAdapter(legacySystem);
+    // adapter.printCustomer(customerId);
+    // adapter.getCustomer_HTTPS(customerId);
   }
 }

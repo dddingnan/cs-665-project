@@ -1,0 +1,26 @@
+[
+    {
+      "season": "Spring",
+      "windSpeed": 55,
+      "temperature": 28,
+      "humidity": 55
+    },
+    {
+      "season": "Summer",
+      "windSpeed": 15,
+      "temperature": 23,
+      "humidity": 80
+    },
+    {
+      "season": "Autumn",
+      "windSpeed": 12,
+      "temperature": 18,
+      "humidity": 68
+    },
+    {
+      "season": "Winter",
+      "windSpeed": 70,
+      "temperature": -5,
+      "humidity": 32
+    }
+  ]
