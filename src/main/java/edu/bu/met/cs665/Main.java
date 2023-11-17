@@ -10,6 +10,7 @@
 package edu.bu.met.cs665;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import edu.bu.met.cs665.exception.InvalidDataException;
@@ -37,16 +38,15 @@ public class Main {
    * @throws InterruptedException If there's an interrupted exception.
    */
   public static void main(String[] args) throws InvalidDataException, InterruptedException {
-    // Create sqlite database first
-    // TODO Check the design pattern
-    Connection conn = null;
+
     try {
       Database.createNewDatabase();
-      conn = Database.connect();
       Database.createAirplaneTable();
       Database.createLocationsTable();
+    } catch (SQLException e) {
+      System.out.println("SQLException: " + e.getMessage());
     } finally {
-      Database.close(conn);
+      Database.close();
     }
 
     // FileLoader loader = new FileLoader();
