@@ -8,13 +8,13 @@ public class SeasonUtils {
         LocalDate currentDate = LocalDate.now();
         Month currentMonth = currentDate.getMonth();
         if (currentMonth == Month.DECEMBER || currentMonth == Month.JANUARY || currentMonth == Month.FEBRUARY) {
-            return Season.Winter;
+            return Season.WINTER;
         } else if (currentMonth == Month.MARCH || currentMonth == Month.APRIL || currentMonth == Month.MAY) {
-            return Season.Spring;
+            return Season.SPRING;
         } else if (currentMonth == Month.JUNE || currentMonth == Month.JULY || currentMonth == Month.AUGUST) {
-            return Season.Summer;
+            return Season.SUMMER;
         } else {
-            return Season.Autumn;
+            return Season.AUTUMN;
         }
     }
 }

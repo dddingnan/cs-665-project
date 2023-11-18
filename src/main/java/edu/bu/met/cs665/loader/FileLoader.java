@@ -13,12 +13,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.bu.met.cs665.airplane.AirbusA320;
 import edu.bu.met.cs665.airplane.AirbusA380;
@@ -133,11 +129,18 @@ public class FileLoader {
      * Each Weather object corresponds to one line in the file.
      * Throws: IOException if an error occurs while reading the file.
      */
-    public List<Weather<Season>> loadWeatherFromFile(String fileName) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        InputStream is = getClass().getResourceAsStream(fileName);
-        List<Weather<Season>> weatherList = objectMapper.readValue(is, new TypeReference<List<Weather<Season>>>() {
-        });
+    public List<Weather> loadWeatherFromFile(String fileName) throws IOException {
+        List<Weather> weatherList = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        while ((line = br.readLine()) != null) {
+            String[] weatherData = line.split(splitBy);
+            Season season = Season.valueOf(weatherData[0].toUpperCase());
+            double windSpeed = Double.parseDouble(weatherData[1]);
+            double temperature = Double.parseDouble(weatherData[2]);
+            double humidity = Double.parseDouble(weatherData[3]);
+            weatherList.add(new Weather(season, windSpeed, temperature, humidity));
+        }
+        br.close();
         return weatherList;
     }
 

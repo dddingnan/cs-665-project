@@ -1,7 +1,9 @@
 package edu.bu.met.cs665.weather;
 
-public class Weather<T> {
-    private T season;
+import edu.bu.met.cs665.season.Season;
+
+public class Weather {
+    private Season season;
     private double windSpeed;
     private double temperature;
     private double humidity;
@@ -9,7 +11,7 @@ public class Weather<T> {
     public Weather() {
     }
 
-    public Weather(T season, double windSpeed, double temperature, double humidity) {
+    public Weather(Season season, double windSpeed, double temperature, double humidity) {
         this.season = season;
         this.windSpeed = windSpeed;
         this.temperature = temperature;
@@ -18,11 +20,11 @@ public class Weather<T> {
 
     // Getters and setters for the weather indices
 
-    public T getSeason() {
+    public Season getSeason() {
         return season;
     }
 
-    public void setSeason(T season) {
+    public void setSeason(Season season) {
         this.season = season;
     }
 

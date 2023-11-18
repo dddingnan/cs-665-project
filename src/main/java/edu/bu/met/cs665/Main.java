@@ -56,6 +56,7 @@ public class Main {
     System.out.println("--------------------------------------------------------");
     List<Location> locations = new ArrayList<>();
     List<Airplane> airplanes = new ArrayList<>();
+    List<Weather> weatherList = new ArrayList<>();
     FileLoader loader = new FileLoader();
     try {
       Season currentSeason = SeasonUtils.getCurrentSeason();
@@ -63,10 +64,10 @@ public class Main {
       System.out.println("--------------------------------------------------------");
       locations = loader.loadLocationsFromFile("src/data/locations.csv");
       airplanes = loader.loadAirplanesFromFile("src/data/airplanes.csv");
+      weatherList = loader.loadWeatherFromFile("src/data/weather.csv");
       // TODO Save into database.
-      List<Weather<Season>> weatherList = loader.loadWeatherFromFile("/data/weather.json");
       // Get the user's current data and determine the season
-      Weather<Season> currentWeather = weatherList.stream()
+      Weather currentWeather = weatherList.stream()
           .filter(weather -> weather.getSeason() == currentSeason)
           .findFirst()
           .orElse(null);
