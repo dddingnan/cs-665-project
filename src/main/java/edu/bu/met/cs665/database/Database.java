@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Database {
-    private static final String SQLITE_CONN_STRING = "jdbc:sqlite:C:/sqlite/database";
+    private static final String SQLITE_CONN_STRING = "jdbc:sqlite:src/main/resources/data";
     private static final String DATABASE_NAME = "cs665-project.db";
     private static Connection conn = null;
 
