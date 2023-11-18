@@ -63,6 +63,7 @@ public class Main {
       System.out.println("--------------------------------------------------------");
       locations = loader.loadLocationsFromFile("src/data/locations.csv");
       airplanes = loader.loadAirplanesFromFile("src/data/airplanes.csv");
+      // TODO Save into database.
       List<Weather<Season>> weatherList = loader.loadWeatherFromFile("/data/weather.json");
       // Get the user's current data and determine the season
       Weather<Season> currentWeather = weatherList.stream()
