@@ -11,7 +11,6 @@ package edu.bu.met.cs665;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +45,7 @@ public class Main {
       Database.createNewDatabase();
       Database.createAirplaneTable();
       Database.createLocationsTable();
+      Database.createWeatherTable();
     } catch (SQLException e) {
       System.out.println("SQLException: " + e.getMessage());
     } finally {

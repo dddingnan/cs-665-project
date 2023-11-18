@@ -88,4 +88,22 @@ public class Database {
         }
     }
 
+    public static void createWeatherTable() throws SQLException {
+        try {
+            connect(); // Ensure connection is established
+            String sql = "CREATE TABLE IF NOT EXISTS weather (\n"
+                    + " season text PRIMARY KEY,\n"
+                    + " wind_speed real NOT NULL,\n"
+                    + " temperature real NOT NULL,\n"
+                    + " humidity real NOT NULL\n"
+                    + ");";
+
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(sql);
+                System.out.println("Weather table has been created.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Weather table Error: " + e.getMessage());
+        }
+    }
 }
