@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.bu.met.cs665.airplane.Airplane;
 import edu.bu.met.cs665.database.Database;
 
-public class AirplaneRepository {
+public class AirplaneRepository implements IRepository<Airplane> {
+
+    @Override
     public void createTable() throws SQLException {
         try {
             Connection conn = Database.connect();
@@ -31,7 +34,8 @@ public class AirplaneRepository {
         }
     }
 
-    public void insertAirplanes(List<Airplane> airplanes) throws SQLException {
+    @Override
+    public void insertData(List<Airplane> airplanes) throws SQLException {
         String sql = "INSERT INTO airplanes (name, range, fuel_capacity, fuel_consumption, speed) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pstmt = null;
         try {
@@ -53,5 +57,11 @@ public class AirplaneRepository {
                 pstmt.close();
             }
         }
+    }
+
+    @Override
+    public List<Airplane> selectAll() throws SQLException {
+        List<Airplane> airplanes = new ArrayList<>();
+        return airplanes;
     }
 }

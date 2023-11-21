@@ -7,9 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-public class LocationRepository {
+public class LocationRepository implements IRepository<Location> {
+
+    @Override
     public void createTable() throws SQLException {
         try {
             Connection conn = Database.connect();
@@ -29,7 +32,8 @@ public class LocationRepository {
         }
     }
 
-    public void insertLocations(List<Location> locations) throws SQLException {
+    @Override
+    public void insertData(List<Location> locations) throws SQLException {
         String sql = "INSERT INTO locations (name, latitude, longitude) VALUES (?, ?, ?)";
         PreparedStatement pstmt = null;
         try {
@@ -49,5 +53,11 @@ public class LocationRepository {
                 pstmt.close();
             }
         }
+    }
+
+    @Override
+    public List<Location> selectAll() throws SQLException {
+        List<Location> locations = new ArrayList<>();
+        return locations;
     }
 }

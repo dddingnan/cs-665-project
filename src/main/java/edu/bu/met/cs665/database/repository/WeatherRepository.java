@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.bu.met.cs665.database.Database;
 import edu.bu.met.cs665.weather.Weather;
 
-public class WeatherRepository {
+public class WeatherRepository implements IRepository<Weather> {
+
+    @Override
     public void createTable() throws SQLException {
         try {
             Connection conn = Database.connect();
@@ -29,7 +32,8 @@ public class WeatherRepository {
         }
     }
 
-    public void insertWeatherData(List<Weather> weatherList) throws SQLException {
+    @Override
+    public void insertData(List<Weather> weatherList) throws SQLException {
         String sql = "INSERT INTO weather (season, wind_speed, temperature, humidity) VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = null;
         try {
@@ -50,5 +54,11 @@ public class WeatherRepository {
                 pstmt.close();
             }
         }
+    }
+
+    @Override
+    public List<Weather> selectAll() throws SQLException {
+        List<Weather> weathers = new ArrayList<>();
+        return weathers;
     }
 }
