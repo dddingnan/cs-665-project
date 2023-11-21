@@ -40,18 +40,6 @@ public class Main {
    * @throws InterruptedException If there's an interrupted exception.
    */
   public static void main(String[] args) throws InvalidDataException, InterruptedException {
-
-    try {
-      Database.createNewDatabase();
-      Database.createAirplaneTable();
-      Database.createLocationsTable();
-      Database.createWeatherTable();
-    } catch (SQLException e) {
-      System.out.println("SQLException: " + e.getMessage());
-    } finally {
-      Database.close();
-    }
-
     System.out.println("Hello! Welcome to the Airplane Destination Evaluation System!");
     System.out.println("--------------------------------------------------------");
     List<Location> locations = new ArrayList<>();
@@ -65,7 +53,13 @@ public class Main {
       locations = loader.loadLocationsFromFile("src/data/locations.csv");
       airplanes = loader.loadAirplanesFromFile("src/data/airplanes.csv");
       weatherList = loader.loadWeatherFromFile("src/data/weather.csv");
-      // TODO Save into database.
+      Database.createNewDatabase();
+      Database.createAirplaneTable();
+      Database.createLocationsTable();
+      Database.createWeatherTable();
+      Database.insertLocations(locations);
+      Database.insertAirplanes(airplanes);
+      Database.insertWeatherData(weatherList);
       // Get the user's current data and determine the season
       Weather currentWeather = weatherList.stream()
           .filter(weather -> weather.getSeason() == currentSeason)
@@ -78,6 +72,11 @@ public class Main {
     } catch (IOException e) {
       System.out.println("Error occurred while reading the file.");
       e.printStackTrace();
+    } catch (SQLException e) {
+      System.out.println("Error inserting data into the database: " + e.getMessage());
+      e.printStackTrace();
+    } finally {
+      Database.close(); // Close the connection here
     }
   }
 }

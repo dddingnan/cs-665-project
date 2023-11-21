@@ -3,8 +3,14 @@ package edu.bu.met.cs665.database;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+
+import edu.bu.met.cs665.airplane.Airplane;
+import edu.bu.met.cs665.location.Location;
+import edu.bu.met.cs665.weather.Weather;
 
 public class Database {
     private static final String SQLITE_CONN_STRING = "jdbc:sqlite:src/main/resources/data";
@@ -106,4 +112,76 @@ public class Database {
             System.out.println("Weather table Error: " + e.getMessage());
         }
     }
+
+    public static void insertLocations(List<Location> locations) throws SQLException {
+        String sql = "INSERT INTO locations (name, latitude, longitude) VALUES (?, ?, ?)";
+        PreparedStatement pstmt = null;
+        try {
+            conn = connect(); // Ensure connection is established
+            pstmt = conn.prepareStatement(sql);
+            for (Location location : locations) {
+                pstmt.setString(1, location.getName());
+                pstmt.setDouble(2, location.getLatitude());
+                pstmt.setDouble(3, location.getLongitude());
+                pstmt.executeUpdate();
+            }
+            System.out.println("Locations have been inserted into the database.");
+        } catch (SQLException e) {
+            System.out.println("Error inserting locations: " + e.getMessage());
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        }
+    }
+
+    public static void insertAirplanes(List<Airplane> airplanes) throws SQLException {
+        String sql = "INSERT INTO airplanes (name, range, fuel_capacity, fuel_consumption, speed) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement pstmt = null;
+        try {
+            conn = connect(); // Ensure connection is established
+            pstmt = conn.prepareStatement(sql);
+            for (Airplane airplane : airplanes) {
+                pstmt.setString(1, airplane.getName());
+                pstmt.setDouble(2, airplane.getRange());
+                pstmt.setDouble(3, airplane.getFuelCapacity());
+                pstmt.setDouble(4, airplane.getFuelConsumption());
+                pstmt.setDouble(5, airplane.getSpeed());
+                pstmt.executeUpdate();
+            }
+            System.out.println("Airplanes have been inserted into the database.");
+        } catch (SQLException e) {
+            System.out.println("Error inserting airplanes: " + e.getMessage());
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        }
+    }
+
+    public static void insertWeatherData(List<Weather> weatherList) throws SQLException {
+        String sql = "INSERT INTO weather (season, wind_speed, temperature, humidity) VALUES (?, ?, ?, ?)";
+        PreparedStatement pstmt = null;
+        try {
+            conn = connect(); // Ensure connection is established
+            pstmt = conn.prepareStatement(sql);
+            for (Weather weather : weatherList) {
+                pstmt.setString(1, weather.getSeason().toString()); // Assuming getSeason() returns a String or
+                                                                    // toString() method is overridden
+                pstmt.setDouble(2, weather.getWindSpeed());
+                pstmt.setDouble(3, weather.getTemperature());
+                pstmt.setDouble(4, weather.getHumidity());
+                pstmt.executeUpdate();
+            }
+            System.out.println("Weather data have been inserted into the database.");
+        } catch (SQLException e) {
+            System.out.println("Error inserting weather data: " + e.getMessage());
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            // Do not close the conn here
+        }
+    }
+
 }
