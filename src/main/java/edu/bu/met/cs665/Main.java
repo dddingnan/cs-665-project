@@ -19,6 +19,10 @@ import edu.bu.met.cs665.exception.InvalidDataException;
 import edu.bu.met.cs665.loader.FileLoader;
 import edu.bu.met.cs665.airplane.Airplane;
 import edu.bu.met.cs665.database.Database;
+import edu.bu.met.cs665.database.initializer.DatabaseInitializer;
+import edu.bu.met.cs665.database.repository.AirplaneRepository;
+import edu.bu.met.cs665.database.repository.LocationRepository;
+import edu.bu.met.cs665.database.repository.WeatherRepository;
 import edu.bu.met.cs665.location.Location;
 import edu.bu.met.cs665.season.Season;
 import edu.bu.met.cs665.season.SeasonUtils;
@@ -42,6 +46,9 @@ public class Main {
   public static void main(String[] args) throws InvalidDataException, InterruptedException {
     System.out.println("Hello! Welcome to the Airplane Destination Evaluation System!");
     System.out.println("--------------------------------------------------------");
+    LocationRepository locationRepo = new LocationRepository();
+    AirplaneRepository airplaneRepo = new AirplaneRepository();
+    WeatherRepository weatherRepo = new WeatherRepository();
     List<Location> locations = new ArrayList<>();
     List<Airplane> airplanes = new ArrayList<>();
     List<Weather> weatherList = new ArrayList<>();
@@ -53,18 +60,18 @@ public class Main {
       locations = loader.loadLocationsFromFile("src/data/locations.csv");
       airplanes = loader.loadAirplanesFromFile("src/data/airplanes.csv");
       weatherList = loader.loadWeatherFromFile("src/data/weather.csv");
-      Database.createNewDatabase();
-      Database.createAirplaneTable();
-      Database.createLocationsTable();
-      Database.createWeatherTable();
-      Database.insertLocations(locations);
-      Database.insertAirplanes(airplanes);
-      Database.insertWeatherData(weatherList);
+      // Create database and tables
+      DatabaseInitializer.initializeDatabase();
+      System.out.println("--------------------------------------------------------");
+      locationRepo.insertLocations(locations);
+      airplaneRepo.insertAirplanes(airplanes);
+      weatherRepo.insertWeatherData(weatherList);
       // Get the user's current data and determine the season
       Weather currentWeather = weatherList.stream()
           .filter(weather -> weather.getSeason() == currentSeason)
           .findFirst()
           .orElse(null);
+      System.out.println("--------------------------------------------------------");
       System.out.println("currentWeather --- " + currentWeather.getSeason());
     } catch (FileNotFoundException e) {
       System.out.println("File not found. Please check the file name and try again.");
