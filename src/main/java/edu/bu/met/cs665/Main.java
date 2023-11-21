@@ -9,18 +9,24 @@
  */
 package edu.bu.met.cs665;
 
-import java.sql.Connection;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.bu.met.cs665.exception.InvalidDataException;
-import edu.bu.met.cs665.legacy.LegacyCustomerData_USB;
 import edu.bu.met.cs665.loader.FileLoader;
-import edu.bu.met.cs665.new_system.CustomerData_HTTPS;
-import edu.bu.met.cs665.new_system.NewCustomerData_HTTPS;
-import edu.bu.met.cs665.adapters.CustomerDataUSBAdapter;
-import edu.bu.met.cs665.common.CustomerData;
+import edu.bu.met.cs665.airplane.Airplane;
 import edu.bu.met.cs665.database.Database;
+import edu.bu.met.cs665.database.initializer.DatabaseInitializer;
+import edu.bu.met.cs665.database.repository.AirplaneRepository;
+import edu.bu.met.cs665.database.repository.LocationRepository;
+import edu.bu.met.cs665.database.repository.WeatherRepository;
+import edu.bu.met.cs665.location.Location;
+import edu.bu.met.cs665.season.Season;
+import edu.bu.met.cs665.season.SeasonUtils;
+import edu.bu.met.cs665.weather.Weather;
 
 public class Main {
 
@@ -38,38 +44,46 @@ public class Main {
    * @throws InterruptedException If there's an interrupted exception.
    */
   public static void main(String[] args) throws InvalidDataException, InterruptedException {
-
+    System.out.println("Hello! Welcome to the Airplane Destination Evaluation System!");
+    System.out.println("--------------------------------------------------------");
+    LocationRepository locationRepo = new LocationRepository();
+    AirplaneRepository airplaneRepo = new AirplaneRepository();
+    WeatherRepository weatherRepo = new WeatherRepository();
+    List<Location> locations = new ArrayList<>();
+    List<Airplane> airplanes = new ArrayList<>();
+    List<Weather> weatherList = new ArrayList<>();
+    FileLoader loader = new FileLoader();
     try {
-      Database.createNewDatabase();
-      Database.createAirplaneTable();
-      Database.createLocationsTable();
+      Season currentSeason = SeasonUtils.getCurrentSeason();
+      System.out.println("User current season: " + currentSeason);
+      System.out.println("--------------------------------------------------------");
+      locations = loader.loadLocationsFromFile("src/data/locations.csv");
+      airplanes = loader.loadAirplanesFromFile("src/data/airplanes.csv");
+      weatherList = loader.loadWeatherFromFile("src/data/weather.csv");
+      // Create database and tables
+      DatabaseInitializer.initializeDatabase();
+      System.out.println("--------------------------------------------------------");
+      locationRepo.insertLocations(locations);
+      airplaneRepo.insertAirplanes(airplanes);
+      weatherRepo.insertWeatherData(weatherList);
+      // Get the user's current data and determine the season
+      Weather currentWeather = weatherList.stream()
+          .filter(weather -> weather.getSeason() == currentSeason)
+          .findFirst()
+          .orElse(null);
+      System.out.println("--------------------------------------------------------");
+      System.out.println("currentWeather --- " + currentWeather.getSeason());
+    } catch (FileNotFoundException e) {
+      System.out.println("File not found. Please check the file name and try again.");
+      e.printStackTrace();
+    } catch (IOException e) {
+      System.out.println("Error occurred while reading the file.");
+      e.printStackTrace();
     } catch (SQLException e) {
-      System.out.println("SQLException: " + e.getMessage());
+      System.out.println("Error inserting data into the database: " + e.getMessage());
+      e.printStackTrace();
     } finally {
-      Database.close();
+      Database.close(); // Close the connection here
     }
-
-    // FileLoader loader = new FileLoader();
-    // List<CustomerData> customers = loader.loadCustomer("src/data/customer.csv");
-    // System.out.println("---------------------------");
-
-    // LegacyCustomerData_USB legacySystem = new LegacyCustomerData_USB(customers);
-    // NewCustomerData_HTTPS newSystem = new NewCustomerData_HTTPS(customers);
-
-    // int customerId = 1; // Example customer ID.
-    // legacySystem.printCustomer(customerId);
-    // legacySystem.getCustomer_USB(customerId);
-
-    // System.out.println("---------------------------");
-
-    // newSystem.printCustomer(customerId);
-    // newSystem.getCustomer_HTTPS(customerId);
-
-    // System.out.println("---------------------------");
-    // // Use the adapter to interact with the legacy system as if it were the new
-    // // HTTPS system
-    // CustomerData_HTTPS adapter = new CustomerDataUSBAdapter(legacySystem);
-    // adapter.printCustomer(customerId);
-    // adapter.getCustomer_HTTPS(customerId);
   }
 }
