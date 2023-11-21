@@ -61,7 +61,7 @@ public class Main {
       airplanes = loader.loadAirplanesFromFile("src/data/airplanes.csv");
       weatherList = loader.loadWeatherFromFile("src/data/weather.csv");
       // Create database and tables
-      DatabaseInitializer.initializeDatabase();
+      DatabaseInitializer.initializeDatabase(locationRepo, airplaneRepo, weatherRepo);
       System.out.println("--------------------------------------------------------");
       locationRepo.insertData(locations);
       airplaneRepo.insertData(airplanes);
