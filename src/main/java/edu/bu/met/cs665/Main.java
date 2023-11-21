@@ -63,9 +63,9 @@ public class Main {
       // Create database and tables
       DatabaseInitializer.initializeDatabase();
       System.out.println("--------------------------------------------------------");
-      locationRepo.insertLocations(locations);
-      airplaneRepo.insertAirplanes(airplanes);
-      weatherRepo.insertWeatherData(weatherList);
+      locationRepo.insertData(locations);
+      airplaneRepo.insertData(airplanes);
+      weatherRepo.insertData(weatherList);
       // Get the user's current data and determine the season
       Weather currentWeather = weatherList.stream()
           .filter(weather -> weather.getSeason() == currentSeason)
