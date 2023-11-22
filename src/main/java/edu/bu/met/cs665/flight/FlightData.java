@@ -1,7 +1,5 @@
 package edu.bu.met.cs665.flight;
 
-import java.util.concurrent.Future;
-
 public class FlightData {
     private final double duration;
     private final double fuelConsumption;
