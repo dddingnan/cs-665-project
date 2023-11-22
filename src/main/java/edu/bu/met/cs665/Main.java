@@ -1,11 +1,9 @@
 /**
  * Name: Dingnan Hsu
  * Course: CS-665 Software Designs & Patterns
- * Date: 11/06/2023
+ * Date: 11/21/2023
  * File Name: Main.java
- * Description: This is the main entry point for a system designed to demonstrate
- * the integration of a legacy USB-based customer data retrieval system with a 
- * new HTTPS-based system.
+ * Description: This is the main entry point for a system
  */
 package edu.bu.met.cs665;
 
@@ -33,11 +31,7 @@ public class Main {
   /**
    * Entry point method for the application. This method initializes the system
    * by:
-   * 1. Loading customer data from a CSV file.
-   * 2. Interacting with a legacy USB-based customer data system.
-   * 3. Interacting with a new HTTPS-based customer data system.
-   * 4. Using an adapter to make the legacy system compatible with the
-   * interface of the new system.
+   * 1.
    * 
    * @param args The command line arguments.
    * @throws InvalidDataException If there's an issue loading data.
