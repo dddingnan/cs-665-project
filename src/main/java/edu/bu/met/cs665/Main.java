@@ -67,6 +67,7 @@ public class Main {
           .orElse(null);
       System.out.println("--------------------------------------------------------");
       System.out.println("currentWeather --- " + currentWeather.getSeason());
+      // TODO User Interface start here
     } catch (FileNotFoundException e) {
       System.out.println("File not found. Please check the file name and try again.");
       e.printStackTrace();
