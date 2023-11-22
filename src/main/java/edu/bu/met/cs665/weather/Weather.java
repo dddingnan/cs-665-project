@@ -8,9 +8,6 @@ public class Weather {
     private double temperature;
     private double humidity;
 
-    public Weather() {
-    }
-
     public Weather(Season season, double windSpeed, double temperature, double humidity) {
         this.season = season;
         this.windSpeed = windSpeed;

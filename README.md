@@ -12,6 +12,7 @@ This project is a sophisticated tool for airplane owners to plan travels. By ent
 # Design Patterns Overview
 
 - `Builder Pattern`: Useful for constructing complex objects like flight plans. This pattern can help manage the various components involved in a flight plan (destinations, durations, fuel usage, etc.) in a step-by-step manner.
+
 - `Repository Pattern`: Ideal for managing database interactions. This pattern provides a separation between the data access logic and the business logic of your application, making it easier to manage data operations and changes.
 - Separate Database Connection Handling: The connection handling should be isolated from the repository logic. The Database class should not know how to create tables or how to insert specific data.
 

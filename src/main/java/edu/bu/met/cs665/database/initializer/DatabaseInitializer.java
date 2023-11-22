@@ -4,17 +4,17 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
+import edu.bu.met.cs665.airplane.Airplane;
 import edu.bu.met.cs665.database.Database;
-import edu.bu.met.cs665.database.repository.AirplaneRepository;
-import edu.bu.met.cs665.database.repository.LocationRepository;
-import edu.bu.met.cs665.database.repository.WeatherRepository;
+import edu.bu.met.cs665.location.Location;
+import edu.bu.met.cs665.database.repository.IRepository;
+import edu.bu.met.cs665.weather.Weather;
 
 public class DatabaseInitializer {
 
-    public static void initializeDatabase() throws SQLException {
-        LocationRepository locationRepo = new LocationRepository();
-        AirplaneRepository airplaneRepo = new AirplaneRepository();
-        WeatherRepository weatherRepo = new WeatherRepository();
+    public static void initializeDatabase(IRepository<Location> locationRepo,
+            IRepository<Airplane> airplaneRepo,
+            IRepository<Weather> weatherRepo) throws SQLException {
         try {
             Connection conn = Database.connect();
             if (conn != null) {
