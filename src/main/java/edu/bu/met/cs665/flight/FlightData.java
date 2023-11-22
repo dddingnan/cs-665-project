@@ -5,11 +5,11 @@ import java.util.concurrent.Future;
 public class FlightData {
     private final double duration;
     private final double fuelConsumption;
-    private final Future<Double> futureCO2Emissions;
-    private final Future<Double> futureFlightCost;
+    private final double futureCO2Emissions;
+    private final double futureFlightCost;
 
-    public FlightData(double duration, double fuelConsumption, Future<Double> futureCO2Emissions,
-            Future<Double> futureFlightCost) {
+    public FlightData(double duration, double fuelConsumption, double futureCO2Emissions,
+            double futureFlightCost) {
         this.duration = duration;
         this.fuelConsumption = fuelConsumption;
         this.futureCO2Emissions = futureCO2Emissions;
@@ -24,11 +24,11 @@ public class FlightData {
         return this.fuelConsumption;
     }
 
-    public Future<Double> getFutureCO2Emissions() {
+    public double getFutureCO2Emissions() {
         return this.futureCO2Emissions;
     }
 
-    public Future<Double> getFutureFlightCost() {
+    public double getFutureFlightCost() {
         return this.futureFlightCost;
     }
 }
