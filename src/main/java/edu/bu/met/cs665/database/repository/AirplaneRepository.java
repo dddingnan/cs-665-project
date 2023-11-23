@@ -47,20 +47,17 @@ public class AirplaneRepository implements IRepository<Airplane> {
     public void insertData(List<Airplane> airplanes) throws SQLException {
         String sql = "INSERT INTO airplanes (name, range, fuel_capacity, fuel_consumption, speed) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pstmt = null;
+        Connection conn = Database.connect();
         try {
-            Connection conn = Database.connect();
             pstmt = conn.prepareStatement(sql);
             for (Airplane airplane : airplanes) {
-                if (!airplaneExists(airplane.getName())) {
+                if (!airplaneExists(airplane.getName(), conn)) {
                     pstmt.setString(1, airplane.getName());
                     pstmt.setDouble(2, airplane.getRange());
                     pstmt.setDouble(3, airplane.getFuelCapacity());
                     pstmt.setDouble(4, airplane.getFuelConsumption());
                     pstmt.setDouble(5, airplane.getSpeed());
                     pstmt.executeUpdate();
-                    System.out.println("Inserted airplane: " + airplane.getName());
-                } else {
-                    System.out.println("Airplane already exists, skipping insertion: " + airplane.getName());
                 }
             }
         } catch (SQLException e) {
@@ -118,10 +115,9 @@ public class AirplaneRepository implements IRepository<Airplane> {
         }
     }
 
-    private boolean airplaneExists(String name) throws SQLException {
+    private boolean airplaneExists(String name, Connection conn) throws SQLException {
         String checkSql = "SELECT COUNT(*) FROM airplanes WHERE name = ?";
-        try (Connection conn = Database.connect();
-                PreparedStatement pstmt = conn.prepareStatement(checkSql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(checkSql)) {
             pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {

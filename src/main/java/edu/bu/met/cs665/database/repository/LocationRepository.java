@@ -38,26 +38,19 @@ public class LocationRepository implements IRepository<Location> {
     public void insertData(List<Location> locations) throws SQLException {
         String sql = "INSERT INTO locations (name, latitude, longitude) VALUES (?, ?, ?)";
         PreparedStatement pstmt = null;
+        Connection conn = Database.connect();
         try {
-            Connection conn = Database.connect();
             pstmt = conn.prepareStatement(sql);
             for (Location location : locations) {
-                if (!locationExists(location.getName())) {
+                if (!locationExists(location.getName(), conn)) {
                     pstmt.setString(1, location.getName());
                     pstmt.setDouble(2, location.getLatitude());
                     pstmt.setDouble(3, location.getLongitude());
-                    pstmt.executeUpdate();
-                    System.out.println("Inserted location: " + location.getName());
-                } else {
-                    System.out.println("Location already exists, skipping insertion: " + location.getName());
+                    pstmt.executeUpdate(); // Execute update inside the loop for each location
                 }
             }
         } catch (SQLException e) {
             System.out.println("Error inserting locations: " + e.getMessage());
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
         }
     }
 
@@ -85,10 +78,9 @@ public class LocationRepository implements IRepository<Location> {
         return locations;
     }
 
-    private boolean locationExists(String name) throws SQLException {
+    private boolean locationExists(String name, Connection conn) throws SQLException {
         String sql = "SELECT COUNT(*) FROM locations WHERE name = ?";
-        try (Connection conn = Database.connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
