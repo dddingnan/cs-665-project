@@ -39,6 +39,7 @@ public class Main {
    * @throws InterruptedException If there's an interrupted exception.
    */
   public static void main(String[] args) throws InvalidDataException, InterruptedException, Exception {
+    System.out.println("--------------------------------------------------------");
     System.out.println("Hello! Welcome to the Airplane Destination Evaluation System!");
     System.out.println("--------------------------------------------------------");
     LocationRepository locationRepo = new LocationRepository();
@@ -66,8 +67,6 @@ public class Main {
           .filter(weather -> weather.getSeason() == currentSeason)
           .findFirst()
           .orElse(null);
-      System.out.println("--------------------------------------------------------");
-      System.out.println("currentWeather --- " + currentWeather.getSeason());
       UserInterface ui = new UserInterface(currentWeather, locationRepo, airplaneRepo);
       ui.start();
     } catch (FileNotFoundException e) {
