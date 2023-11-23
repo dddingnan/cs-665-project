@@ -1,11 +1,13 @@
 package edu.bu.met.cs665.database;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-    private static final String SQLITE_CONN_STRING = "jdbc:sqlite:src/main/resources/data/cs665-project.db";
+    private static final String DATABASE_LOCATION = "src/main/resources/data/cs665-project.db";
+    private static final String SQLITE_CONN_STRING = "jdbc:sqlite:" + DATABASE_LOCATION;
     private static volatile Connection conn = null; // volatile keyword ensures visibility of changes across threads.
 
     public static synchronized Connection connect() throws SQLException {
@@ -34,5 +36,10 @@ public class Database {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+    }
+
+    public static boolean databaseExists() {
+        File dbFile = new File(DATABASE_LOCATION);
+        return dbFile.exists();
     }
 }

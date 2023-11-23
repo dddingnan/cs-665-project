@@ -15,6 +15,10 @@ public class DatabaseInitializer {
     public static void initializeDatabase(IRepository<Location> locationRepo,
             IRepository<Airplane> airplaneRepo,
             IRepository<Weather> weatherRepo) throws SQLException {
+
+        if (!Database.databaseExists()) {
+            System.out.println("Database does not exist. Creating a new database.");
+        }
         try {
             Connection conn = Database.connect();
             if (conn != null) {
@@ -27,7 +31,6 @@ public class DatabaseInitializer {
             }
         } catch (SQLException e) {
             System.out.println("Error initializing database: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }
