@@ -17,6 +17,7 @@ public class WeatherRepository implements IRepository<Weather> {
         try {
             Connection conn = Database.connect();
             String sql = "CREATE TABLE IF NOT EXISTS weather (\n"
+                    + " id integer PRIMARY KEY,\n"
                     + " season text PRIMARY KEY,\n"
                     + " wind_speed real NOT NULL,\n"
                     + " temperature real NOT NULL,\n"
