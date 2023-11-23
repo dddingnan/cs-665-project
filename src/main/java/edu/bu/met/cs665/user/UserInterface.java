@@ -115,13 +115,25 @@ public class UserInterface {
             }
 
             System.out.println("--------------------------------------------------------");
-            System.out.println("Do you want to make another calculation? (yes/no)");
-            String answer = scanner.next();
-            if (answer.equalsIgnoreCase("no")) {
+            if (!promptForContinue()) {
                 System.out.println("See you next time~!");
                 break;
             }
         }
         scanner.close();
+    }
+
+    private boolean promptForContinue() {
+        while (true) {
+            System.out.print("Do you want to make another calculation? (yes/no): ");
+            String answer = scanner.next().trim().toLowerCase();
+            if (answer.equals("yes")) {
+                return true;
+            } else if (answer.equals("no")) {
+                return false;
+            } else {
+                System.out.println("Please type 'yes' or 'no'.");
+            }
+        }
     }
 }
