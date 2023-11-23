@@ -51,20 +51,20 @@ public class AirplaneRepository implements IRepository<Airplane> {
             Connection conn = Database.connect();
             pstmt = conn.prepareStatement(sql);
             for (Airplane airplane : airplanes) {
-                pstmt.setString(1, airplane.getName());
-                pstmt.setDouble(2, airplane.getRange());
-                pstmt.setDouble(3, airplane.getFuelCapacity());
-                pstmt.setDouble(4, airplane.getFuelConsumption());
-                pstmt.setDouble(5, airplane.getSpeed());
-                pstmt.executeUpdate();
+                if (!airplaneExists(airplane.getName())) {
+                    pstmt.setString(1, airplane.getName());
+                    pstmt.setDouble(2, airplane.getRange());
+                    pstmt.setDouble(3, airplane.getFuelCapacity());
+                    pstmt.setDouble(4, airplane.getFuelConsumption());
+                    pstmt.setDouble(5, airplane.getSpeed());
+                    pstmt.executeUpdate();
+                    System.out.println("Inserted airplane: " + airplane.getName());
+                } else {
+                    System.out.println("Airplane already exists, skipping insertion: " + airplane.getName());
+                }
             }
-            System.out.println("Airplanes have been inserted into the database.");
         } catch (SQLException e) {
             System.out.println("Error inserting airplanes: " + e.getMessage());
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
         }
     }
 
@@ -116,5 +116,19 @@ public class AirplaneRepository implements IRepository<Airplane> {
             default:
                 return null;
         }
+    }
+
+    private boolean airplaneExists(String name) throws SQLException {
+        String checkSql = "SELECT COUNT(*) FROM airplanes WHERE name = ?";
+        try (Connection conn = Database.connect();
+                PreparedStatement pstmt = conn.prepareStatement(checkSql)) {
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        }
+        return false;
     }
 }
