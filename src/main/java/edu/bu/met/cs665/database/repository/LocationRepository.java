@@ -1,10 +1,12 @@
 package edu.bu.met.cs665.database.repository;
 
 import edu.bu.met.cs665.database.Database;
+import edu.bu.met.cs665.exception.InvalidDataException;
 import edu.bu.met.cs665.location.Location;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -58,6 +60,24 @@ public class LocationRepository implements IRepository<Location> {
     @Override
     public List<Location> selectAll() throws SQLException {
         List<Location> locations = new ArrayList<>();
+        String sql = "SELECT * FROM locations";
+        try (Connection conn = Database.connect();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                String name = rs.getString("name");
+                double latitude = rs.getDouble("latitude");
+                double longitude = rs.getDouble("longitude");
+
+                Location location = new Location(name, latitude, longitude);
+                locations.add(location);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException selecting locations: " + e.getMessage());
+        } catch (InvalidDataException e) {
+            System.out.println("InvalidDataException selecting locations: " + e.getMessage());
+        }
         return locations;
     }
 }
