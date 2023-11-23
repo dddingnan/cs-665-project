@@ -24,6 +24,7 @@ import edu.bu.met.cs665.database.repository.WeatherRepository;
 import edu.bu.met.cs665.location.Location;
 import edu.bu.met.cs665.season.Season;
 import edu.bu.met.cs665.season.SeasonUtils;
+import edu.bu.met.cs665.user.UserInterface;
 import edu.bu.met.cs665.weather.Weather;
 
 public class Main {
@@ -37,7 +38,7 @@ public class Main {
    * @throws InvalidDataException If there's an issue loading data.
    * @throws InterruptedException If there's an interrupted exception.
    */
-  public static void main(String[] args) throws InvalidDataException, InterruptedException {
+  public static void main(String[] args) throws InvalidDataException, InterruptedException, Exception {
     System.out.println("Hello! Welcome to the Airplane Destination Evaluation System!");
     System.out.println("--------------------------------------------------------");
     LocationRepository locationRepo = new LocationRepository();
@@ -67,7 +68,8 @@ public class Main {
           .orElse(null);
       System.out.println("--------------------------------------------------------");
       System.out.println("currentWeather --- " + currentWeather.getSeason());
-      // TODO User Interface start here
+      UserInterface ui = new UserInterface(currentWeather, locationRepo, airplaneRepo);
+      ui.start();
     } catch (FileNotFoundException e) {
       System.out.println("File not found. Please check the file name and try again.");
       e.printStackTrace();
