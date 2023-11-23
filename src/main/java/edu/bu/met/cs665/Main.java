@@ -38,48 +38,81 @@ public class Main {
    * @throws InvalidDataException If there's an issue loading data.
    * @throws InterruptedException If there's an interrupted exception.
    */
-  public static void main(String[] args) throws InvalidDataException, InterruptedException, Exception {
+  public static void main(String[] args) {
+    try {
+      startApplication();
+    } catch (Exception e) {
+      handleExceptions(e);
+    } finally {
+      Database.close(); // Ensure the database connection is always closed
+    }
+  }
+
+  private static void startApplication() throws Exception {
     System.out.println("--------------------------------------------------------");
     System.out.println("Hello! Welcome to the Airplane Destination Evaluation System!");
     System.out.println("--------------------------------------------------------");
-    LocationRepository locationRepo = new LocationRepository();
-    AirplaneRepository airplaneRepo = new AirplaneRepository();
-    WeatherRepository weatherRepo = new WeatherRepository();
-    List<Location> locations = new ArrayList<>();
-    List<Airplane> airplanes = new ArrayList<>();
-    List<Weather> weatherList = new ArrayList<>();
-    FileLoader loader = new FileLoader();
-    try {
-      Season currentSeason = SeasonUtils.getCurrentSeason();
-      System.out.println("User current season: " + currentSeason);
-      System.out.println("--------------------------------------------------------");
-      locations = loader.loadLocationsFromFile("src/data/locations.csv");
-      airplanes = loader.loadAirplanesFromFile("src/data/airplanes.csv");
-      weatherList = loader.loadWeatherFromFile("src/data/weather.csv");
-      // Create database and tables
-      DatabaseInitializer.initializeDatabase(locationRepo, airplaneRepo, weatherRepo);
-      System.out.println("--------------------------------------------------------");
-      locationRepo.insertData(locations);
-      airplaneRepo.insertData(airplanes);
-      weatherRepo.insertData(weatherList);
-      // Get the user's current data and determine the season
-      Weather currentWeather = weatherList.stream()
-          .filter(weather -> weather.getSeason() == currentSeason)
-          .findFirst()
-          .orElse(null);
-      UserInterface ui = new UserInterface(currentWeather, locationRepo, airplaneRepo);
-      ui.start();
-    } catch (FileNotFoundException e) {
+
+    loadAndInitializeData();
+
+    Weather currentWeather = getCurrentSeasonWeather();
+    UserInterface ui = new UserInterface(currentWeather, new LocationRepository(), new AirplaneRepository());
+    ui.start();
+  }
+
+  private static void loadAndInitializeData() throws SQLException, IOException, InvalidDataException {
+    List<Location> locations = loadLocations();
+    List<Airplane> airplanes = loadAirplanes();
+    List<Weather> weatherList = loadWeather();
+
+    initializeDatabase();
+
+    insertDataToDatabase(locations, airplanes, weatherList);
+  }
+
+  private static void initializeDatabase() throws SQLException {
+    DatabaseInitializer.initializeDatabase(new LocationRepository(), new AirplaneRepository(), new WeatherRepository());
+    System.out.println("--------------------------------------------------------");
+  }
+
+  private static void insertDataToDatabase(List<Location> locations, List<Airplane> airplanes,
+      List<Weather> weatherList) throws SQLException {
+    new LocationRepository().insertData(locations);
+    new AirplaneRepository().insertData(airplanes);
+    new WeatherRepository().insertData(weatherList);
+  }
+
+  private static List<Location> loadLocations() throws FileNotFoundException, IOException, InvalidDataException {
+    return new FileLoader().loadLocationsFromFile("src/data/locations.csv");
+  }
+
+  private static List<Airplane> loadAirplanes() throws FileNotFoundException, IOException {
+    return new FileLoader().loadAirplanesFromFile("src/data/airplanes.csv");
+  }
+
+  private static List<Weather> loadWeather() throws IOException {
+    return new FileLoader().loadWeatherFromFile("src/data/weather.csv");
+  }
+
+  private static Weather getCurrentSeasonWeather() throws SQLException, IOException {
+    Season currentSeason = SeasonUtils.getCurrentSeason();
+    System.out.println("User current season: " + currentSeason);
+    return loadWeather().stream()
+        .filter(weather -> weather.getSeason() == currentSeason)
+        .findFirst()
+        .orElse(null);
+  }
+
+  private static void handleExceptions(Exception e) {
+    if (e instanceof FileNotFoundException) {
       System.out.println("File not found. Please check the file name and try again.");
-      e.printStackTrace();
-    } catch (IOException e) {
+    } else if (e instanceof IOException) {
       System.out.println("Error occurred while reading the file.");
-      e.printStackTrace();
-    } catch (SQLException e) {
+    } else if (e instanceof SQLException) {
       System.out.println("Error inserting data into the database: " + e.getMessage());
-      e.printStackTrace();
-    } finally {
-      Database.close(); // Close the connection here
+    } else {
+      System.out.println("An unexpected error occurred: " + e.getMessage());
     }
+    e.printStackTrace();
   }
 }
