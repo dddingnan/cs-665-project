@@ -42,12 +42,16 @@ public class LocationRepository implements IRepository<Location> {
             Connection conn = Database.connect();
             pstmt = conn.prepareStatement(sql);
             for (Location location : locations) {
-                pstmt.setString(1, location.getName());
-                pstmt.setDouble(2, location.getLatitude());
-                pstmt.setDouble(3, location.getLongitude());
-                pstmt.executeUpdate();
+                if (!locationExists(location.getName())) {
+                    pstmt.setString(1, location.getName());
+                    pstmt.setDouble(2, location.getLatitude());
+                    pstmt.setDouble(3, location.getLongitude());
+                    pstmt.executeUpdate();
+                    System.out.println("Inserted location: " + location.getName());
+                } else {
+                    System.out.println("Location already exists, skipping insertion: " + location.getName());
+                }
             }
-            System.out.println("Locations have been inserted into the database.");
         } catch (SQLException e) {
             System.out.println("Error inserting locations: " + e.getMessage());
         } finally {
@@ -79,5 +83,18 @@ public class LocationRepository implements IRepository<Location> {
             System.out.println("InvalidDataException selecting locations: " + e.getMessage());
         }
         return locations;
+    }
+
+    private boolean locationExists(String name) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM locations WHERE name = ?";
+        try (Connection conn = Database.connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
     }
 }
