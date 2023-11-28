@@ -10,7 +10,6 @@ package edu.bu.met.cs665;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.bu.met.cs665.exception.InvalidDataException;
