@@ -1,3 +1,14 @@
+/**
+ * Name: Dingnan Hsu
+ * Course: CS-665 Software Designs & Patterns
+ * Date: 11/21/2023
+ * File Name: LocationRepository.java
+ * Description: It manages the CRUD operations for 
+ * the 'locations' table in the database. 
+ * This class implements the IRepository interface for 
+ * the Location data model.
+ */
+
 package edu.bu.met.cs665.database.repository;
 
 import edu.bu.met.cs665.database.Database;
@@ -13,7 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationRepository implements IRepository<Location> {
-
+    /**
+     * Creates the 'locations' table in the database if it doesn't already exist.
+     * This method uses SQL commands to define the structure of the table including
+     * fields for ID, name, latitude, and longitude.
+     *
+     * @throws SQLException If there's an error in executing the SQL command or
+     *                      connecting to the database.
+     */
     @Override
     public void createTable() throws SQLException {
         try {
@@ -34,6 +52,17 @@ public class LocationRepository implements IRepository<Location> {
         }
     }
 
+    /**
+     * Inserts a list of Location objects into the 'locations' table. Before
+     * inserting,
+     * it checks if a location with the same name already exists in the table to
+     * avoid
+     * duplicates.
+     *
+     * @param locations A list of Location objects to be inserted into the database.
+     * @throws SQLException If there's an error in executing the SQL command or
+     *                      connecting to the database.
+     */
     @Override
     public void insertData(List<Location> locations) throws SQLException {
         String sql = "INSERT INTO locations (name, latitude, longitude) VALUES (?, ?, ?)";
@@ -54,6 +83,16 @@ public class LocationRepository implements IRepository<Location> {
         }
     }
 
+    /**
+     * Retrieves all location records from the database and converts them into a
+     * list
+     * of Location objects.
+     *
+     * @return A list of Location objects, each representing a record in the
+     *         'locations' table.
+     * @throws SQLException If there's an error in executing the SQL command or
+     *                      connecting to the database.
+     */
     @Override
     public List<Location> selectAll() throws SQLException {
         List<Location> locations = new ArrayList<>();
@@ -78,6 +117,15 @@ public class LocationRepository implements IRepository<Location> {
         return locations;
     }
 
+    /**
+     * Checks if a location with the given name already exists in the database.
+     *
+     * @param name The name of the location to check.
+     * @param conn A Connection object to the database.
+     * @return true if the location exists, false otherwise.
+     * @throws SQLException If there's an error in executing the SQL command or
+     *                      connecting to the database.
+     */
     private boolean locationExists(String name, Connection conn) throws SQLException {
         String sql = "SELECT COUNT(*) FROM locations WHERE name = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
