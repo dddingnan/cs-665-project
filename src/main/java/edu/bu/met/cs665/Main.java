@@ -3,14 +3,15 @@
  * Course: CS-665 Software Designs & Patterns
  * Date: 11/21/2023
  * File Name: Main.java
- * Description: This is the main entry point for a system
+ * Description: This class serves as the entry point for the Airplane Destination Evaluation System. 
+ * It handles the initial setup and launch of the application, including loading data, initializing the database, 
+ * and starting the user interface.
  */
 package edu.bu.met.cs665;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.bu.met.cs665.exception.InvalidDataException;
@@ -30,13 +31,9 @@ import edu.bu.met.cs665.weather.Weather;
 public class Main {
 
   /**
-   * Entry point method for the application. This method initializes the system
-   * by:
-   * 1.
+   * The main method that serves as the entry point for the application.
    * 
-   * @param args The command line arguments.
-   * @throws InvalidDataException If there's an issue loading data.
-   * @throws InterruptedException If there's an interrupted exception.
+   * @param args Command line arguments (not used in this application).
    */
   public static void main(String[] args) {
     try {
@@ -48,6 +45,13 @@ public class Main {
     }
   }
 
+  /**
+   * Starts the application by loading data, initializing the database,
+   * and launching the user interface.
+   * 
+   * @throws Exception Throws if any error occurs during the application startup
+   *                   process.
+   */
   private static void startApplication() throws Exception {
     System.out.println("--------------------------------------------------------");
     System.out.println("Hello! Welcome to the Airplane Destination Evaluation System!");
@@ -60,6 +64,13 @@ public class Main {
     ui.start();
   }
 
+  /**
+   * Loads necessary data and initializes the database.
+   * 
+   * @throws SQLException         If a database error occurs.
+   * @throws IOException          If an error occurs during data loading.
+   * @throws InvalidDataException If data validation fails.
+   */
   private static void loadAndInitializeData() throws SQLException, IOException, InvalidDataException {
     List<Location> locations = loadLocations();
     List<Airplane> airplanes = loadAirplanes();
@@ -70,11 +81,24 @@ public class Main {
     insertDataToDatabase(locations, airplanes, weatherList);
   }
 
+  /**
+   * Initializes the database with necessary tables.
+   * 
+   * @throws SQLException If a database error occurs.
+   */
   private static void initializeDatabase() throws SQLException {
     DatabaseInitializer.initializeDatabase(new LocationRepository(), new AirplaneRepository(), new WeatherRepository());
     System.out.println("--------------------------------------------------------");
   }
 
+  /**
+   * Inserts data into the database.
+   * 
+   * @param locations   List of locations to insert.
+   * @param airplanes   List of airplanes to insert.
+   * @param weatherList List of weather data to insert.
+   * @throws SQLException If a database error occurs.
+   */
   private static void insertDataToDatabase(List<Location> locations, List<Airplane> airplanes,
       List<Weather> weatherList) throws SQLException {
     new LocationRepository().insertData(locations);
@@ -94,6 +118,13 @@ public class Main {
     return new FileLoader().loadWeatherFromFile("src/data/weather.csv");
   }
 
+  /**
+   * Retrieves the weather data for the current season.
+   * 
+   * @return Weather data for the current season, or null if not available.
+   * @throws SQLException If a database error occurs.
+   * @throws IOException  If an error occurs during data loading.
+   */
   private static Weather getCurrentSeasonWeather() throws SQLException, IOException {
     Season currentSeason = SeasonUtils.getCurrentSeason();
     System.out.println("User current season: " + currentSeason);
@@ -103,6 +134,11 @@ public class Main {
         .orElse(null);
   }
 
+  /**
+   * Handles various exceptions that might occur during application startup.
+   * 
+   * @param e The exception to handle.
+   */
   private static void handleExceptions(Exception e) {
     if (e instanceof FileNotFoundException) {
       System.out.println("File not found. Please check the file name and try again.");
