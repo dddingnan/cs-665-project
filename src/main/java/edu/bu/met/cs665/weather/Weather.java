@@ -2,7 +2,7 @@
  * Name: Dingnan Hsu
  * Course: CS-665 Software Designs & Patterns
  * Date: 11/21/2023
- * File Name: Main.java
+ * File Name: Weather.java
  * Description: Represents weather conditions for a specific location or time.
  * It includes information about the season, wind speed, temperature, and humidity.
  */
