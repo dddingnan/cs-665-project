@@ -1,3 +1,14 @@
+/**
+ * Name: Dingnan Hsu
+ * Course: CS-665 Software Designs & Patterns
+ * Date: 11/21/2023
+ * File Name: DistanceCalculator .java
+ * Description: 
+ * This class calculates the distance between two geographical points using the 
+ * Haversine formula. 
+ * It is designed to be used in a concurrent environment by implementing 
+ * the Callable interface.
+ */
 package edu.bu.met.cs665.calculator;
 
 import java.util.concurrent.Callable;
@@ -9,6 +20,14 @@ public class DistanceCalculator implements Callable<Double> {
     private final double latitude2;
     private final double longitude2;
 
+    /**
+     * Constructor for DistanceCalculator.
+     * 
+     * @param latitude1  The location 1's latitude.
+     * @param longitude1 The location 1's longitude.
+     * @param latitude2  The location 2's latitude.
+     * @param longitude2 The location 2's longitude.
+     */
     public DistanceCalculator(double latitude1, double longitude1, double latitude2, double longitude2) {
         this.latitude1 = latitude1;
         this.longitude1 = longitude1;
@@ -16,6 +35,11 @@ public class DistanceCalculator implements Callable<Double> {
         this.longitude2 = longitude2;
     }
 
+    /**
+     * Calculates the distance.
+     * 
+     * @return The calculated distance.
+     */
     @Override
     public Double call() {
         // Haversine formula

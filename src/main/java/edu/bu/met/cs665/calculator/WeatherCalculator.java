@@ -1,3 +1,13 @@
+/**
+ * Name: Dingnan Hsu
+ * Course: CS-665 Software Designs & Patterns
+ * Date: 11/21/2023
+ * File Name: WeatherCalculator.java
+ * Description: 
+ * The WeatherCalculator class is designed to calculate a weather factor based on various weather conditions.
+ * It implements the Callable interface, allowing it to be used with ExecutorService for concurrent execution.
+ * This calculator takes into account seasonal variations and specific weather parameters like wind speed, temperature, and humidity.
+ */
 package edu.bu.met.cs665.calculator;
 
 import java.util.concurrent.Callable;
@@ -6,13 +16,30 @@ import edu.bu.met.cs665.season.Season;
 import edu.bu.met.cs665.weather.Weather;
 
 public class WeatherCalculator implements Callable<Double> {
-    // private final Weather<Season> weather;
     private Weather weather;
 
+    /**
+     * Constructs a WeatherCalculator with a specified Weather object.
+     * 
+     * @param weather The Weather object containing the details required for the
+     *                calculation.
+     */
     public WeatherCalculator(Weather weather) {
         this.weather = weather;
     }
 
+    /**
+     * Calculates the weather factor based on the season and weather conditions.
+     * The method adjusts the weather factor based on wind speed, temperature, and
+     * humidity for each season.
+     * Pre-condition: The weather object must not be null.
+     * Post-condition: Returns a weather factor that is a valid value between 0 and
+     * 2.
+     * 
+     * @return The calculated weather factor.
+     * @throws AssertionError If the weather object is null or the calculated factor
+     *                        is out of the expected range.
+     */
     @Override
     public Double call() {
         // Pre-condition: The weather object must not be null
