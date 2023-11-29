@@ -53,6 +53,10 @@ https://github.com/dddingnan/cs-665-project
 
 ![UML Diagram](UML.png)
 
+# PowerPoint Presentation Link:
+
+https://docs.google.com/presentation/d/1BeymGCRGKuObuqFVQTvGd6hlFxXqHptB0Ni5nHUMeaU/edit?usp=sharing
+
 # Maven Commands
 
 We'll use Apache Maven to compile and run this project. You'll need to install Apache Maven (https://maven.apache.org/) on your system.
