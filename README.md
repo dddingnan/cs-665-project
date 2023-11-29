@@ -7,7 +7,19 @@
 
 # Project Overview
 
-This project is a sophisticated tool for airplane owners to plan travels. By entering their location and airplane type, users can find destinations within their non-refueling range. The tool determines flight range, potential destinations, and travel duration, considering aircraft specifics and fuel status. It also estimates fuel usage and CO2 emissions with respect to aircraft efficiency, flight distance, and weather conditions. Moreover, it calculates potential fuel costs. New features include an expanded list of airplane types for precise calculations and database integration for enhanced data management, effectively replacing file-based data loading. It handles database issues seamlessly. The tool gives users a comprehensive overview of each destination, promoting informed, eco-friendly travel decisions
+- This advanced travel planning system is specifically tailored for airplane owners, and lovers, offering a comprehensive suite of tools for efficient and environmentally friendly journey planning. It enables users to determine potential destinations based on their current location and airplane type, factoring in the airplane's fuel range to explore options without refueling.
+- The system analyzes flight details, including duration and reachability, by considering aircraft-specific parameters like range, fuel capacity, and consumption rates. Additionally, it assesses environmental impact by estimating fuel consumption and CO2 emissions, taking into account the airplane's efficiency, travel distance, and prevailing weather conditions. Cost estimation is another key feature, providing users with anticipated fuel costs to aid in budgeting.
+- Comprehensive reporting gives users a detailed overview of each destination, including essential aspects like flight duration, fuel usage, CO2 emissions, and estimated costs, facilitating informed and sustainable travel decisions.
+
+# Solved What Problem?
+
+1. `Travel Planning Efficiency`: Streamlines the process of determining feasible destinations based on specific airplane capabilities and current location.
+
+2. `Environmental Impact Awareness`: Helps users understand and minimize the ecological footprint of their air travels by providing detailed emissions data.
+
+3. `Cost Management`: Offers precise fuel cost estimates, allowing for better financial planning and budgeting for trips.
+
+By providing comprehensive reports on various travel aspects, it empowers users to make well-informed decisions that align with their preferences. This project, therefore, serves not only as a travel planning tool but also as a platform for promoting responsible and sustainable aviation practices among private airplane owners.
 
 # Design Patterns Overview
 
