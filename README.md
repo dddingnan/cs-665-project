@@ -41,18 +41,9 @@ By providing comprehensive reports on various travel aspects, it empowers users 
 
 - `Builder Pattern`: The `FlightDataBuilder` class demonstrates the `Builder pattern`, streamlining complex `FlightData` object construction. It handles `flight duration, fuel consumption, CO2 emissions, and cost calculations` in a structured way. By using `ExecutorService` for concurrent calculations, it enhances performance and scalability. This pattern shows how to create complex objects with interdependent attributes in a modular and maintainable manner, effectively managing flight plan components like destinations, durations, and fuel usage.
 
-- `Repository Pattern`: Ideal for managing database interactions. This pattern provides a separation between the data access logic and the business logic of your application, making it easier to manage data operations and changes.
-- Separate Database Connection Handling: The connection handling should be isolated from the repository logic. The Database class should not know how to create tables or how to insert specific data.
+- `Repository Pattern`: The project through the creation of specific repositories like `LocationRepository, AirplaneRepository, and WeatherRepository`. Each repository class is dedicated to handling database operations for a specific entity, ensuring a clear separation between data access logic and business logic. The use of Data Access Objects (DAOs) within these repositories further abstracts and encapsulates data source interactions. This approach simplifies data management and `makes the system more maintainable by isolating database connection handling from repository logic`.
 
-Create Specific Repositories: For each entity (e.g., Location, Airplane, Weather), create a repository class that handles all database operations related to that entity.
-
-Use Data Access Objects (DAOs): These objects abstract and encapsulate all access to the data source. The DAO manages the connection with the data source to obtain and store data.
-
-Each repository class (e.g., LocationRepository, AirplaneRepository, WeatherRepository) encapsulates the logic for database operations related to a specific entity. This provides a clear separation of concerns where your business logic can interact with data through these abstractions without depending on the details of the data access implementation.
-
-- `Lazy Loading Pattern`: This pattern can be beneficial for your application in managing resource usage efficiently, especially when dealing with large sets of flight data that might not all need to be loaded into memory at once.
-- By applying lazy loading, you're optimizing the resource usage of your application, ensuring that the database connection is only established when necessary and not before. This can lead to reduced memory footprint and potentially improved performance, especially if the database operations are not the central focus of your application.
-- Process and transfer data from file-based storage to a database
+- `Lazy Loading Pattern`: In this project, the `Lazy Loading Pattern` is efficiently used in the `Database class`. This approach ensures database connections are only established when necessary, optimizing resource use. The `Database` class's connect method, with `synchronized blocks and double-checked locking, ensures a connection is initialized only when first needed`. This pattern minimizes memory use and improves performance, particularly important in applications like this, where large datasets are handled intermittently.
 
 # GitHub Repository Link:
 
