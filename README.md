@@ -21,9 +21,25 @@
 
 By providing comprehensive reports on various travel aspects, it empowers users to make well-informed decisions that align with their preferences. This project, therefore, serves not only as a travel planning tool but also as a platform for promoting responsible and sustainable aviation practices among private airplane owners.
 
-# Design Patterns Overview
+# Tasks - Flexibility
 
-- `Builder Pattern`: Useful for constructing complex objects like flight plans. This pattern can help manage the various components involved in a flight plan (destinations, durations, fuel usage, etc.) in a step-by-step manner.
+- `Adding or Removing Object Types`: By leveraging the `AbstractAirplane` class and the `Airplane` interface, adding or removing airplane types is made efficient. To introduce a new airplane type, simply extend AbstractAirplane and tailor specific behaviors as needed. Removing a type involves just deactivating or deleting its class.
+
+- `Database and Data Loading`: The database integration and the `FileLoader` class enhance the system's adaptability. Modifying data sources, whether it involves switching databases or altering file formats, can be efficiently managed within these components, ensuring the rest of the system remains unaffected by such changes.
+
+# Tasks - The Simplicity And Understandability
+
+- `Code Organization and Naming Conventions`: Organized into distinct packages and classes, each with a clear responsibility. The naming conventions for classes, methods, and variables are intuitive, making it easy to understand what each part of the code is intended to do.
+
+- `Comments and Documentation`: Detailed comments and method descriptions enhances the readability and maintainability of the code.
+
+# Tasks - Avoided Duplicated Code
+
+- `Code Reusability`: Through the use of inheritance (`AbstractAirplane class`) and interfaces (`Airplane`). This approach promotes code reusability and makes maintenance easier. For instance, common properties and methods of airplanes are defined in the `AbstractAirplane` class, from which specific airplane types inherit.
+
+# Tasks - Design Patterns Overview
+
+- `Builder Pattern`: The `FlightDataBuilder` class demonstrates the `Builder pattern`, streamlining complex `FlightData` object construction. It handles `flight duration, fuel consumption, CO2 emissions, and cost calculations` in a structured way. By using `ExecutorService` for concurrent calculations, it enhances performance and scalability. This pattern shows how to create complex objects with interdependent attributes in a modular and maintainable manner, effectively managing flight plan components like destinations, durations, and fuel usage.
 
 - `Repository Pattern`: Ideal for managing database interactions. This pattern provides a separation between the data access logic and the business logic of your application, making it easier to manage data operations and changes.
 - Separate Database Connection Handling: The connection handling should be isolated from the repository logic. The Database class should not know how to create tables or how to insert specific data.
@@ -42,34 +58,9 @@ Each repository class (e.g., LocationRepository, AirplaneRepository, WeatherRepo
 
 https://github.com/dddingnan/cs-665-project
 
-# Implementation Description
-
-For each assignment, please answer the following:
-
-- Explain the level of flexibility in your implementation, including how new object types can
-  be easily added or removed in the future.
-- Discuss the simplicity and understandability of your implementation, ensuring that it is
-  easy for others to read and maintain.
-- Describe how you have avoided duplicated code and why it is important.
-- If applicable, mention any design patterns you have used and explain why they were
-  chosen.
-
----
-
-### `Answer`
-
-1. `Flexibility`
-   - `CSV Data Storage`: Using CSV files for data storage makes it simple to add, modify, or remove customer without changing the core code. For instance, if we wish to incorporate new customer, we simply need to ensure that the new customer class implements the Customer data interface by adding into the CSV files.
-2. `Simplicity & Understandability`
-   - By using interfaces and classes to specific functionality (like CustomerData_HTTPS). This division can make the system more understandable for new developers or when maintaining the code.
-3. `Avoidance of Duplicated Code`
-   - The use of an adapter pattern with `CustomerDataUSBAdapter` helps avoid duplicated code by allowing the new system to use the legacy `CustomerData_USB` interface without having to reimplement its functionality. Ensuring that all customer data operations are handled through well-defined interfaces can prevent code duplication, as any changes to the data handling would be localized to the specific implementations of these interfaces.
-4. `Design patterns`
-   - `Adapter pattern`: This choice was made to ensure to reconcile the differences between the legacy `CustomerData_USB` and the new `CustomerData_HTTPS` interface. [The main purpose is to create a bridge between two incompatible interfaces. This is achieved by creating an adapter class that joins the functionalities of independent or incompatible interfaces.](https://en.wikipedia.org/wiki/Adapter_pattern)
-
 ## UML Diagram
 
-![UML Diagram](UML.svg)
+![UML Diagram](UML.png)
 
 # Maven Commands
 
