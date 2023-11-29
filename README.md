@@ -7,57 +7,51 @@
 
 # Project Overview
 
-This project is a sophisticated tool for airplane owners to plan travels. By entering their location and airplane type, users can find destinations within their non-refueling range. The tool determines flight range, potential destinations, and travel duration, considering aircraft specifics and fuel status. It also estimates fuel usage and CO2 emissions with respect to aircraft efficiency, flight distance, and weather conditions. Moreover, it calculates potential fuel costs. New features include an expanded list of airplane types for precise calculations and database integration for enhanced data management, effectively replacing file-based data loading. It handles database issues seamlessly. The tool gives users a comprehensive overview of each destination, promoting informed, eco-friendly travel decisions
+- This advanced travel planning system is specifically tailored for airplane owners, and lovers, offering a comprehensive suite of tools for efficient and environmentally friendly journey planning. It enables users to determine potential destinations based on their current location and airplane type, factoring in the airplane's fuel range to explore options without refueling.
+- The system analyzes flight details, including duration and reachability, by considering aircraft-specific parameters like range, fuel capacity, and consumption rates. Additionally, it assesses environmental impact by estimating fuel consumption and CO2 emissions, taking into account the airplane's efficiency, travel distance, and prevailing weather conditions. Cost estimation is another key feature, providing users with anticipated fuel costs to aid in budgeting.
+- Comprehensive reporting gives users a detailed overview of each destination, including essential aspects like flight duration, fuel usage, CO2 emissions, and estimated costs, facilitating informed and sustainable travel decisions.
 
-# Design Patterns Overview
+# Solved What Problem?
 
-- `Builder Pattern`: Useful for constructing complex objects like flight plans. This pattern can help manage the various components involved in a flight plan (destinations, durations, fuel usage, etc.) in a step-by-step manner.
+1. `Travel Planning Efficiency`: Streamlines the process of determining feasible destinations based on specific airplane capabilities and current location.
 
-- `Repository Pattern`: Ideal for managing database interactions. This pattern provides a separation between the data access logic and the business logic of your application, making it easier to manage data operations and changes.
-- Separate Database Connection Handling: The connection handling should be isolated from the repository logic. The Database class should not know how to create tables or how to insert specific data.
+2. `Environmental Impact Awareness`: Helps users understand and minimize the ecological footprint of their air travels by providing detailed emissions data.
 
-Create Specific Repositories: For each entity (e.g., Location, Airplane, Weather), create a repository class that handles all database operations related to that entity.
+3. `Cost Management`: Offers precise fuel cost estimates, allowing for better financial planning and budgeting for trips.
 
-Use Data Access Objects (DAOs): These objects abstract and encapsulate all access to the data source. The DAO manages the connection with the data source to obtain and store data.
+By providing comprehensive reports on various travel aspects, it empowers users to make well-informed decisions that align with their preferences. This project, therefore, serves not only as a travel planning tool but also as a platform for promoting responsible and sustainable aviation practices among private airplane owners.
 
-Each repository class (e.g., LocationRepository, AirplaneRepository, WeatherRepository) encapsulates the logic for database operations related to a specific entity. This provides a clear separation of concerns where your business logic can interact with data through these abstractions without depending on the details of the data access implementation.
+# Tasks - Flexibility
 
-- `Lazy Loading Pattern`: This pattern can be beneficial for your application in managing resource usage efficiently, especially when dealing with large sets of flight data that might not all need to be loaded into memory at once.
-- By applying lazy loading, you're optimizing the resource usage of your application, ensuring that the database connection is only established when necessary and not before. This can lead to reduced memory footprint and potentially improved performance, especially if the database operations are not the central focus of your application.
-- Process and transfer data from file-based storage to a database
+- `Adding or Removing Object Types`: By leveraging the `AbstractAirplane` class and the `Airplane` interface, adding or removing airplane types is made efficient. To introduce a new airplane type, simply extend AbstractAirplane and tailor specific behaviors as needed. Removing a type involves just deactivating or deleting its class.
+
+- `Database and Data Loading`: The database integration and the `FileLoader` class enhance the system's adaptability. Modifying data sources, whether it involves switching databases or altering file formats, can be efficiently managed within these components, ensuring the rest of the system remains unaffected by such changes.
+
+# Tasks - The Simplicity And Understandability
+
+- `Code Organization and Naming Conventions`: Organized into distinct packages and classes, each with a clear responsibility. The naming conventions for classes, methods, and variables are intuitive, making it easy to understand what each part of the code is intended to do.
+
+- `Comments and Documentation`: Detailed comments and method descriptions enhances the readability and maintainability of the code.
+
+# Tasks - Avoided Duplicated Code
+
+- `Code Reusability`: Through the use of inheritance (`AbstractAirplane class`) and interfaces (`Airplane`). This approach promotes code reusability and makes maintenance easier. For instance, common properties and methods of airplanes are defined in the `AbstractAirplane` class, from which specific airplane types inherit.
+
+# Tasks - Design Patterns Overview
+
+- `Builder Pattern`: The `FlightDataBuilder` class demonstrates the `Builder pattern`, streamlining complex `FlightData` object construction. It handles `flight duration, fuel consumption, CO2 emissions, and cost calculations` in a structured way. By using `ExecutorService` for concurrent calculations, it enhances performance and scalability. This pattern shows how to create complex objects with interdependent attributes in a modular and maintainable manner, effectively managing flight plan components like destinations, durations, and fuel usage.
+
+- `Repository Pattern`: The project through the creation of specific repositories like `LocationRepository, AirplaneRepository, and WeatherRepository`. Each repository class is dedicated to handling database operations for a specific entity, ensuring a clear separation between data access logic and business logic. The use of Data Access Objects (DAOs) within these repositories further abstracts and encapsulates data source interactions. This approach simplifies data management and `makes the system more maintainable by isolating database connection handling from repository logic`.
+
+- `Lazy Loading Pattern`: In this project, the `Lazy Loading Pattern` is efficiently used in the `Database class`. This approach ensures database connections are only established when necessary, optimizing resource use. The `Database` class's connect method, with `synchronized blocks and double-checked locking, ensures a connection is initialized only when first needed`. This pattern minimizes memory use and improves performance, particularly important in applications like this, where large datasets are handled intermittently.
 
 # GitHub Repository Link:
 
 https://github.com/dddingnan/cs-665-project
 
-# Implementation Description
-
-For each assignment, please answer the following:
-
-- Explain the level of flexibility in your implementation, including how new object types can
-  be easily added or removed in the future.
-- Discuss the simplicity and understandability of your implementation, ensuring that it is
-  easy for others to read and maintain.
-- Describe how you have avoided duplicated code and why it is important.
-- If applicable, mention any design patterns you have used and explain why they were
-  chosen.
-
----
-
-### `Answer`
-
-1. `Flexibility`
-   - `CSV Data Storage`: Using CSV files for data storage makes it simple to add, modify, or remove customer without changing the core code. For instance, if we wish to incorporate new customer, we simply need to ensure that the new customer class implements the Customer data interface by adding into the CSV files.
-2. `Simplicity & Understandability`
-   - By using interfaces and classes to specific functionality (like CustomerData_HTTPS). This division can make the system more understandable for new developers or when maintaining the code.
-3. `Avoidance of Duplicated Code`
-   - The use of an adapter pattern with `CustomerDataUSBAdapter` helps avoid duplicated code by allowing the new system to use the legacy `CustomerData_USB` interface without having to reimplement its functionality. Ensuring that all customer data operations are handled through well-defined interfaces can prevent code duplication, as any changes to the data handling would be localized to the specific implementations of these interfaces.
-4. `Design patterns`
-   - `Adapter pattern`: This choice was made to ensure to reconcile the differences between the legacy `CustomerData_USB` and the new `CustomerData_HTTPS` interface. [The main purpose is to create a bridge between two incompatible interfaces. This is achieved by creating an adapter class that joins the functionalities of independent or incompatible interfaces.](https://en.wikipedia.org/wiki/Adapter_pattern)
-
 ## UML Diagram
 
-![UML Diagram](UML.svg)
+![UML Diagram](UML.png)
 
 # Maven Commands
 
